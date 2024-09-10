@@ -42,7 +42,8 @@ const Navigation = () => {
                         <div className="flex flex-col items-center py-4 space-y-4">
                             <a href="#home" className="text-primary hover:text-secondary transition-colors duration-200">Home</a>
                             <a href="#about" className="text-primary hover:text-secondary transition-colors duration-200">About</a>
-                            <a href="#portfolio" className="text-primary hover:text-secondary transition-colors duration-200">Portfolio</a>
+                            <a href="#portfolio" className="text-primary hover:text-secondary transition-colors duration-200">Projects</a>
+                            <a href="#portfolio" className="text-primary hover:text-secondary transition-colors duration-200">Blogs</a>
                             <a href="#contact" className="text-primary hover:text-secondary transition-colors duration-200">Contact</a>
                         </div>
                     </div>
