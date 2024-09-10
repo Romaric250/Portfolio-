@@ -30,24 +30,24 @@ const Navigation = () => {
 
     return (
         <div className="fixed top-0 left-0 w-full z-50 bg-primary text-white shadow-md">
-            <nav className="container mx-auto flex justify-between items-center py-4 relative">
-                <div className="text-xl font-bold cursor-pointer">
-                    Logo
-                </div>
-                <div className="text-xl font-bold cursor-pointer" onClick={toggleMenu}>
+            <nav className="container mx-auto flex justify-between items-center py-4 px-4 sm:px-6 md:px-8 lg:px-10 relative">
+                <div className="text-xl sm:text-2xl md:text-3xl font-bold cursor-pointer">
                     R.L
                 </div>
+                <div className="text-xl sm:text-2xl md:text-3xl font-bold cursor-pointer" onClick={toggleMenu}>
+                    Menu
+                </div>
                 {isMenuOpen && (
-                    <div ref={menuRef} className="absolute top-full left-1/2 transform -translate-x-1/2 p-6 mt-2 bg-white shadow-md rounded-md">
+                    <div ref={menuRef} className="absolute top-full left-1/2 transform -translate-x-1/2 p-6 mt-2 bg-white shadow-md rounded-md transition-all duration-300 ease-in-out">
                         <div className="flex flex-col items-center py-4 space-y-4">
-                            <a href="#home" className="text-primary">Home</a>
-                            <a href="#about" className="text-primary">About</a>
-                            <a href="#portfolio" className="text-primary">Portfolio</a>
-                            <a href="#contact" className="text-primary">Contact</a>
+                            <a href="#home" className="text-primary hover:text-secondary transition-colors duration-200">Home</a>
+                            <a href="#about" className="text-primary hover:text-secondary transition-colors duration-200">About</a>
+                            <a href="#portfolio" className="text-primary hover:text-secondary transition-colors duration-200">Portfolio</a>
+                            <a href="#contact" className="text-primary hover:text-secondary transition-colors duration-200">Contact</a>
                         </div>
                     </div>
                 )}
-                <button className="bg-secondary text-white py-2 px-4 rounded-md">
+                <button className="bg-secondary text-white py-2 px-4 rounded-md hover:bg-secondary-dark transition-colors duration-200">
                     Download CV
                 </button>
             </nav>
