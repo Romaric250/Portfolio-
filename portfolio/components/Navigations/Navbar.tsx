@@ -30,12 +30,15 @@ const Navigation = () => {
 
     return (
         <div className="fixed top-0 left-0 w-full z-50 bg-primary text-white shadow-md">
-            <nav className="container mx-auto flex justify-center items-center py-4 relative">
-                <div className="text-2xl font-bold text-primary cursor-pointer" onClick={toggleMenu}>
+            <nav className="container mx-auto flex justify-between items-center py-4 relative">
+                <div className="text-xl font-bold cursor-pointer">
+                    Logo
+                </div>
+                <div className="text-xl font-bold cursor-pointer" onClick={toggleMenu}>
                     R.L
                 </div>
                 {isMenuOpen && (
-                    <div ref={menuRef} className="absolute top-full mt-2 bg-white shadow-md rounded-md">
+                    <div ref={menuRef} className="absolute top-full left-1/2 transform -translate-x-1/2 p-6 mt-2 bg-white shadow-md rounded-md">
                         <div className="flex flex-col items-center py-4 space-y-4">
                             <a href="#home" className="text-primary">Home</a>
                             <a href="#about" className="text-primary">About</a>
@@ -44,6 +47,9 @@ const Navigation = () => {
                         </div>
                     </div>
                 )}
+                <button className="bg-secondary text-white py-2 px-4 rounded-md">
+                    Download CV
+                </button>
             </nav>
         </div>
     );
