@@ -38,12 +38,12 @@ const Navigation = () => {
                 </div>
                 {isMenuOpen && (
                     <div ref={menuRef} className="absolute top-full left-1/2 transform -translate-x-1/2 p-6 mt-2 bg-primary text-white shadow-md rounded-md transition-all duration-300 ease-in-out">
-                        <div className="flex flex-col items-center py-4 space-y-4">
-                            <a href="#home" className="text-primary hover:text-secondary transition-colors duration-200">Home</a>
-                            <a href="#about" className="text-primary hover:text-secondary transition-colors duration-200">About</a>
-                            <a href="#portfolio" className="text-primary hover:text-secondary transition-colors duration-200">Projects</a>
-                            <a href="#portfolio" className="text-primary hover:text-secondary transition-colors duration-200">Blogs</a>
-                            <a href="#contact" className="text-primary hover:text-secondary transition-colors duration-200">Contact</a>
+                        <div className="flex flex-col items-center py-4 space-y-4 text-white">
+                            <a href="/" className=" hover:text-secondary transition-colors duration-200">Home</a>
+                            <a href="#about" className=" hover:text-secondary transition-colors duration-200">About</a>
+                            <a href="#portfolio" className=" hover:text-secondary transition-colors duration-200">Projects</a>
+                            <a href="#portfolio" className="hover:text-secondary transition-colors duration-200">Blogs</a>
+                            <a href="#contact" className=" hover:text-secondary transition-colors duration-200">Contact</a>
                         </div>
                     </div>
                 )}
