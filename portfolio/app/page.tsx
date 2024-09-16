@@ -1,10 +1,10 @@
-
+import Landing from "../components/main/landing"
 
 
 const Page = () => {
   return (
     <div>
-testing some content
+<Landing/>
     </div>
   )
 }
