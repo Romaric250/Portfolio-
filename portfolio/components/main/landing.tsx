@@ -2,7 +2,8 @@ import Image from 'next/image'; // Assuming you are using Next.js Image componen
 
 const Landing = () => {
   return (
-    <div className="mt-20 px-6 lg:px-20 h-full overflow-y-auto">
+    <div className="mt-20 px-6 overflow-y-auto">
+
       <div className="flex flex-col lg:flex-row items-center bg-primary text-white p-6 lg:p-12 rounded-lg shadow-lg">
         <div className="bg-secondary-100 text-wrap p-6 lg:p-12 rounded-lg shadow-md lg:w-2/3">
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">I'm a Software Engineer</h1>
