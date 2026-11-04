@@ -1,0 +1,178 @@
+{
+  "source": {
+    "liveUrl": "https://rlonfonyuy.online",
+    "mirrorUrl": "https://romaric250.vercel.app",
+    "crawledAt": "2026-11-03",
+    "note": "Content salvaged from the live site (newer than the code that was in this repo) and from the repo code. Styling, components and layout were intentionally NOT kept."
+  },
+  "meta": {
+    "title": "Romaric Lonfonyuy",
+    "description": "I write backend </code>",
+    "keywords": [
+      "Portofio", "Interactive", "Frontend Developer", "developer in africa", "React", "Tailwind CSS",
+      "Framer motion", "Animation", "Romaric", "Romaric Lonfonyuy", "lonfonyuy", "Backend Developer",
+      "Python Instructor", "Backend Instructor", "Node.js Developer", "Cloud Architecture", "API Development",
+      "Software Engineer", "Technical Instructor"
+    ],
+    "twitterCreator": "@romaric250",
+    "ogImage": "assets/old-og-logo.png"
+  },
+  "identity": {
+    "name": "Romaric Lonfonyuy",
+    "monogram": "RL.",
+    "heroIntro": "Hi I'm Romaric Lonfonyuy",
+    "heroBio": "Passionate backend developer and instructor with expertise in building scalable systems and APIs. Specialized in Node.js, Python, and cloud architecture. Committed to creating efficient, maintainable, and high-performance solutions.",
+    "aboutParagraphs": [
+      "I'm a passionate backend developer with a deep love for building scalable systems and solving complex architectural challenges. With years of experience in the field, I've developed a strong foundation in creating robust, efficient, and maintainable backend solutions that power modern applications.",
+      "My journey in software development has led me to work with various technologies and frameworks, always staying at the forefront of industry best practices and emerging trends. I believe in writing clean, well-documented code and creating systems that are not just functional, but also scalable and future-proof."
+    ],
+    "repoLandingCopy": [
+      "I'm a Software Engineer",
+      "Specialized in Backend Engineering with a deep passion for fetching data. With over 4 years of experience, I build scalable, fast, robust, and secured applications using the most up-to-date technologies available. My forte lies in Quality Assurance and Automation - ensuring that projects meet the highest QA standards while automating any repetitive tasks to streamline processes.",
+      "When it comes to Tutoring, I find joy in sharing my knowledge with students of all ages. Whether it's explaining complex concepts or simplifying technical jargon, I can easily adjust my teaching approach to suit different age groups.",
+      "I am dedicated to continuous learning to refine my skills and stay relevant to the evolving technological fields."
+    ]
+  },
+  "contact": {
+    "email": "lonfonyuyromaric@gmail.com",
+    "phone": "+237 650650516",
+    "location": "Yaounde, Cameroon"
+  },
+  "socials": {
+    "github": "https://github.com/Romaric250",
+    "linkedin": "https://linkedin.com/in/romaric-lonfonyuy",
+    "x": "https://x.com/romaric250"
+  },
+  "cv": { "oldPdf": "assets/old-cv-2025.pdf", "oldRemoteUrl": "https://2d4r8xyx2f.ufs.sh/f/NBqaoz7VhueJsFvxWCV0BLlCJ695EW3HzQagGRjteSFyrPNv" },
+  "skillGroups": {
+    "Backend Development": ["Node.js", "Python", "Express", "FastAPI", "Flask"],
+    "Database Management": ["NoSQL", "MongoDB", "Redis", "PostgreSQL"],
+    "DevOps & API Testing": ["CI/CD", "Linux", "Git & GitHub", "Jest"],
+    "Architecture": ["REST APIs", "GraphQL", "System Design", "Cloud Architecture"]
+  },
+  "projects": [
+    {
+      "title": "Elearning mobile App",
+      "type": "mobile",
+      "summary": "Learning made easy, ace your exams with ease.",
+      "stack": ["Node.js", "Next.js", "React Native", "TypeScript", "Express"],
+      "sourceUrl": null,
+      "liveUrl": null,
+      "image": "assets/elearning-mobile-app.jpg",
+      "alt": "Screenshot of Elearning mobile App"
+    },
+    {
+      "title": "TiC Summit Edtech platform",
+      "type": "web",
+      "summary": "A learning platform to inspire and empower young techies through a robust curriculum powered by AI.",
+      "stack": ["Python", "Node.js", "Artificial Intelligence"],
+      "sourceUrl": null,
+      "liveUrl": "https://portal.ticsummit.org",
+      "image": "assets/tic-summit-edtech-platform.png",
+      "alt": "Screenshot of TiC Summit Edtech platform"
+    },
+    {
+      "title": "Dewise Learning",
+      "type": "web",
+      "summary": "The world is tilting towards renewable energy; take courses on energy transition to stay updated.",
+      "stack": ["Node.js", "Next.js"],
+      "sourceUrl": null,
+      "liveUrl": "https://dewise-energy.com/",
+      "image": "assets/dewise-learning.png",
+      "alt": "Screenshot of Dewise Learning"
+    },
+    {
+      "title": "E-commerce Platform for farmers (AgroLink)",
+      "type": "web",
+      "summary": "A platform that helps farmers in Cameroon scale their business.",
+      "stack": ["Express", "Node.js", "React", "JavaScript"],
+      "sourceUrl": null,
+      "liveUrl": "https://agro-link-cm.vercel.app/en",
+      "image": "assets/agrolink-ecommerce-farmers.png",
+      "alt": "Screenshot of E-commerce Platform for farmers"
+    },
+    {
+      "title": "CMS for your Blogs (Notpadd)",
+      "type": "web",
+      "summary": "Manage your blogs better than ever before.",
+      "stack": ["Express", "Next.js", "TypeScript"],
+      "sourceUrl": null,
+      "liveUrl": "https://notpadd.vercel.app/",
+      "image": "assets/notpadd-blog-cms.png",
+      "alt": "Screenshot of CMS for your Blogs"
+    },
+    {
+      "title": "Automated Certificate Gen. for Elearning Apps",
+      "type": "web",
+      "summary": "Easily integrate our APIs into your existing apps to automate the certificate generation part of your app.",
+      "stack": ["Python", "Machine Learning", "Node.js", "Next.js"],
+      "sourceUrl": null,
+      "liveUrl": null,
+      "image": "assets/automated-certificate-generation.png",
+      "alt": "Screenshot of Automated Certificate Gen. for Elearning Apps"
+    },
+    {
+      "title": "PixelFly",
+      "type": "web",
+      "summary": "Image restoration, optimization and enhancement with Python/OpenCV.",
+      "stack": ["Python", "OpenCV"],
+      "sourceUrl": "https://github.com/Romaric250/pixelfly",
+      "liveUrl": "https://pixelfly.vercel.app/",
+      "image": null,
+      "alt": null
+    },
+    {
+      "title": "Organiseme",
+      "type": "package",
+      "summary": "Put your files in order with this single command.",
+      "stack": ["Node.js", "TypeScript"],
+      "sourceUrl": "https://github.com/Romaric250/organiseme",
+      "liveUrl": null,
+      "image": "assets/organiseme.png",
+      "alt": "Screenshot of Organiseme"
+    },
+    {
+      "title": "pingflow",
+      "type": "package",
+      "summary": "Test your internet speed directly from the terminal.",
+      "stack": ["Node.js", "TypeScript"],
+      "sourceUrl": "https://github.com/Romaric250/pingflow",
+      "liveUrl": null,
+      "image": "assets/pingflow.png",
+      "alt": "Screenshot of pingflow"
+    }
+  ],
+  "workHistory": [
+    {
+      "company": "TiC Foundation",
+      "role": "Software Engineer",
+      "period": "2023 - 01/2025",
+      "description": "Developed and maintained company websites, boosting active monthly users from 300 to 1,000 and reducing page load times by 50%. Implemented backend optimizations for improved security, scalability, and database efficiency, and mentored 15 interns."
+    },
+    {
+      "company": "Skaleway",
+      "role": "Backend Engineer",
+      "period": "01/2023 - Present",
+      "description": "Designed and developed backend systems for LMS platforms and mobile applications, reducing API response times from 1.8s to 600ms and enhancing system efficiency by 50%. Built a secure, scalable infrastructure handling over 2 million concurrent users with a 90% reduction in downtime."
+    },
+    {
+      "company": "Developer Institute, Cameroon",
+      "role": "Backend Engineer and Instructor",
+      "period": "06/2024 - Present",
+      "description": "Provided hands-on training in backend web development to over 25 students, covering JavaScript, Node.js, Python, and Flask. Developed scalable backend solutions for internal projects and implemented CI/CD workflows to streamline development and deployment."
+    },
+    {
+      "company": "Algorithmic International School of Programming Bastos",
+      "role": "Software Engineer and Instructor",
+      "period": "07/2023 - 2024",
+      "description": "Taught Python programming along with mobile app, backend, and game development to over 50 students, achieving an 80% success rate in real-world projects."
+    }
+  ],
+  "testimonials": [],
+  "certificates": [],
+  "blogPosts": [],
+  "footer": {
+    "links": ["Crafts", "Portal", "pixelfly", "Contact", "Github", "Linkedin"],
+    "copyright": "2025 Romaric Lonfonyuy all rights reserved."
+  }
+}

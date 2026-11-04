@@ -1,0 +1,25 @@
+{
+  "note": "Every URL found on the old site (nav, footer, code routes, live crawl). The old site had no sitemap.xml or robots.txt (both 404). Each entry maps to its closest new page with a permanent (301/308) redirect configured in next.config.ts.",
+  "hosts": {
+    "canonical": "https://rlonfonyuy.online",
+    "legacyMirrors": ["https://romaric250.vercel.app", "https://www.rlonfonyuy.online"]
+  },
+  "urls": [
+    { "old": "/", "status": 200, "new": "/", "redirect": false, "source": "nav" },
+    { "old": "/about", "status": 200, "new": "/about", "redirect": false, "source": "nav" },
+    { "old": "/lab", "status": 200, "new": "/projects", "redirect": true, "source": "nav (\"My Crafts\")" },
+    { "old": "/writings", "status": 404, "new": "/blog", "redirect": true, "source": "nav (never shipped)" },
+    { "old": "/contact", "status": 200, "new": "/contact", "redirect": false, "source": "nav" },
+    { "old": "/#about", "status": 200, "new": "/about", "redirect": false, "source": "repo navbar anchor" },
+    { "old": "/#portfolio", "status": 200, "new": "/projects", "redirect": false, "source": "repo navbar anchor" },
+    { "old": "/#contact", "status": 200, "new": "/contact", "redirect": false, "source": "repo navbar anchor" },
+    { "old": "/crafts", "status": 404, "new": "/projects", "redirect": true, "source": "footer label" },
+    { "old": "/portal", "status": 404, "new": "https://portal.ticsummit.org", "redirect": true, "source": "footer label" },
+    { "old": "/pixelfly", "status": 404, "new": "/projects/pixelfly", "redirect": true, "source": "footer label" },
+    { "old": "/site.webmanifest", "status": 404, "new": "/manifest.webmanifest", "redirect": true, "source": "head link" },
+    { "old": "/cv.pdf", "status": 404, "new": "/cv/download", "redirect": true, "source": "defensive" },
+    { "old": "/resume", "status": 404, "new": "/cv", "redirect": true, "source": "defensive" },
+    { "old": "/projects.html", "status": 404, "new": "/projects", "redirect": true, "source": "defensive" },
+    { "old": "/index.html", "status": 404, "new": "/", "redirect": true, "source": "defensive" }
+  ]
+}

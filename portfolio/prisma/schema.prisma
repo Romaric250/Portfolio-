@@ -1,0 +1,710 @@
+// Prisma 6.19.x — the latest line with an official MongoDB connector (Prisma 7 dropped it).
+// Use `pnpm db:push` (no migrations for MongoDB).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────── Enums ───────────────────────────
+
+enum ContentStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum PostStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+}
+
+enum SkillLevel {
+  PRODUCTION
+  PROFICIENT
+  LEARNING
+  EXPLORING
+}
+
+enum SkillDomain {
+  LANGUAGES
+  BACKEND
+  FRONTEND
+  DATABASES
+  HEALTH_INFORMATICS
+  SECURITY
+  TOOLS
+  SOFT_SKILLS
+}
+
+enum ProjectDomain {
+  AI
+  HEALTH_TECH
+  ACCESSIBILITY
+  EDTECH
+  WEB
+  TOOLING
+}
+
+enum ProjectStatus {
+  LIVE
+  IN_PROGRESS
+  ARCHIVED
+  CONCEPT
+}
+
+enum ArchitectureDiagram {
+  NONE
+  NBOGNE
+  SIGNCONNECT
+  HOSPITAL
+  TIC_SUMMIT
+}
+
+enum CertificateFileType {
+  IMAGE
+  PDF
+}
+
+enum SecurityEntryKind {
+  ROADMAP
+  LOG
+  WRITEUP
+  LAB
+}
+
+enum SecurityEntryState {
+  PLANNED
+  IN_PROGRESS
+  DONE
+}
+
+enum InquiryStatus {
+  NEW
+  CONTACTED
+  WON
+  LOST
+  ARCHIVED
+}
+
+enum MessageKind {
+  CONTACT
+  PROJECT_INQUIRY
+}
+
+enum MediaSlot {
+  NONE
+  HERO_PORTRAIT
+  ABOUT_PORTRAIT
+  OG_FALLBACK
+  COMMUNITY
+  GALLERY
+  SERVICE_VISUAL
+  PROJECT_COVER
+  CV_PDF
+}
+
+enum CommunityKind {
+  LEADERSHIP
+  MENTORSHIP
+  TEACHING
+  VOLUNTEERING
+  FOUNDING
+}
+
+enum AuditAction {
+  LOGIN
+  LOGIN_FAILED
+  LOGOUT
+  CREATE
+  UPDATE
+  DELETE
+  PUBLISH
+  UNPUBLISH
+  SETTINGS
+  SECURITY
+  EXPORT
+}
+
+// ─────────────────────────── Auth & security ───────────────────────────
+
+model AdminUser {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  email          String   @unique
+  name           String   @default("Romaric Lonfonyuy")
+  passwordHash   String
+  totpEnabled    Boolean  @default(false)
+  totpSecret     String?
+  recoveryCodes  String[] @default([])
+  sessionVersion Int      @default(1)
+  lastLoginAt    DateTime?
+  lastLoginIp    String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model LoginAttempt {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  key       String // "ip:<ip>" or "email:<email>"
+  success   Boolean
+  ip        String?
+  email     String?
+  createdAt DateTime @default(now())
+
+  @@index([key, createdAt])
+  @@index([createdAt])
+}
+
+model AuditLog {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  action    AuditAction
+  entity    String // e.g. "Project"
+  entityId  String?
+  summary   String
+  ip        String?
+  userAgent String?
+  actorId   String?     @db.ObjectId
+  meta      Json?
+  createdAt DateTime    @default(now())
+
+  @@index([createdAt])
+  @@index([entity, entityId])
+}
+
+model RateLimit {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  key       String   @unique
+  count     Int      @default(0)
+  resetAt   DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([resetAt])
+}
+
+// ─────────────────────────── Site settings (singleton) ───────────────────────────
+
+model SiteSettings {
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  key                  String   @unique @default("default")
+  name                 String   @default("Romaric Lonfonyuy")
+  alternateNames       String[] @default([])
+  headline             String   @default("Backend engineer. AI builder. Security-minded.")
+  tagline              String   @default("I build secure, intelligent systems that work where the internet doesn't.")
+  bio                  String   @default("")
+  shortBio             String   @default("")
+  location             String   @default("Accra, Ghana / Yaounde, Cameroon")
+  availability         String   @default("Available for select projects")
+  availabilityOpen     Boolean  @default(true)
+  email                String   @default("")
+  phone                String?
+  bookingUrl           String?
+  githubUrl            String?
+  linkedinUrl          String?
+  xUrl                 String?
+  whatsappUrl          String?
+  siteUrl              String   @default("https://rlonfonyuy.online")
+  defaultSeoTitle      String   @default("Romaric Lonfonyuy | Backend Engineer, AI Builder, Cybersecurity")
+  defaultSeoDescription String  @default("")
+  defaultKeywords      String[] @default([])
+  googleVerification   String?
+  bingVerification     String?
+  ogImageUrl           String?
+  ogImageKey           String?
+  accentHue            Int      @default(160)
+  featureFlags         Json?
+  jobTitle             String   @default("Backend Engineer, AI Builder & Cybersecurity-focused Developer")
+  worksFor             String?
+  nowText              String   @default("")
+  usesText             String   @default("")
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+// ─────────────────────────── Portfolio content ───────────────────────────
+
+model Project {
+  id              String              @id @default(auto()) @map("_id") @db.ObjectId
+  title           String
+  slug            String              @unique
+  summary         String
+  problem         String?
+  approach        String?
+  impact          String?
+  caseStudyJson   Json?
+  caseStudyHtml   String?
+  role            String?
+  stack           String[]            @default([])
+  domains         ProjectDomain[]     @default([])
+  projectStatus   ProjectStatus       @default(LIVE)
+  status          ContentStatus       @default(PUBLISHED)
+  period          String?
+  metrics         Json? // [{label, value}]
+  liveUrl         String?
+  repoUrl         String?
+  coverUrl        String?
+  coverKey        String?
+  coverAlt        String?
+  gallery         Json? // [{url,key,alt}]
+  diagram         ArchitectureDiagram @default(NONE)
+  featured        Boolean             @default(false)
+  order           Int                 @default(0)
+  seoTitle        String?
+  seoDescription  String?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  @@index([status, featured, order])
+  @@index([order])
+}
+
+model ClientWork {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  slug        String        @unique
+  url         String?
+  scope       String
+  description String?
+  tech        String[]      @default([])
+  screenshots Json? // [{url,key,alt}]
+  coverUrl    String?
+  coverKey    String?
+  coverAlt    String?
+  testimonial String?
+  clientType  String? // Organisation / SME / Individual
+  year        Int?
+  status      ContentStatus @default(PUBLISHED)
+  featured    Boolean       @default(false)
+  order       Int           @default(0)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([status, order])
+}
+
+model Service {
+  id            String        @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
+  slug          String        @unique
+  tagline       String?
+  description   String
+  deliverables  String[]      @default([])
+  process       Json? // [{title, description}]
+  startingFrom  String?
+  ctaLabel      String        @default("Start a project")
+  icon          String        @default("Globe")
+  coverUrl      String?
+  coverKey      String?
+  coverAlt      String?
+  status        ContentStatus @default(DRAFT)
+  featured      Boolean       @default(false)
+  order         Int           @default(0)
+  seoTitle      String?
+  seoDescription String?
+  faqs          ServiceFaq[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([status, order])
+}
+
+model ServiceFaq {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  serviceId String   @db.ObjectId
+  service   Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  question  String
+  answer    String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([serviceId, order])
+}
+
+model Skill {
+  id              String      @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  slug            String      @unique
+  domain          SkillDomain
+  level           SkillLevel
+  description     String?
+  builtWith       String? // what he built with it
+  icon            String?
+  relatedProjectSlugs String[] @default([])
+  featured        Boolean     @default(false)
+  order           Int         @default(0)
+  status          ContentStatus @default(PUBLISHED)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@index([domain, order])
+  @@index([status])
+}
+
+model SecurityLabEntry {
+  id          String             @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  slug        String             @unique
+  kind        SecurityEntryKind
+  state       SecurityEntryState @default(PLANNED)
+  summary     String?
+  bodyJson    Json?
+  bodyHtml    String?
+  topics      String[]           @default([])
+  resources   Json? // [{label,url}]
+  date        DateTime?
+  status      ContentStatus      @default(PUBLISHED)
+  order       Int                @default(0)
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  @@index([kind, order])
+  @@index([status, date])
+}
+
+model Experience {
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  role         String
+  organisation String
+  organisationUrl String?
+  location     String?
+  employmentType String? // Internship, Contract, Remote
+  startDate    DateTime
+  endDate      DateTime?
+  current      Boolean       @default(false)
+  summary      String?
+  highlights   String[]      @default([])
+  stack        String[]      @default([])
+  logoUrl      String?
+  logoKey      String?
+  showOnCv     Boolean       @default(true)
+  status       ContentStatus @default(PUBLISHED)
+  order        Int           @default(0)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@index([status, order])
+  @@index([startDate])
+}
+
+model Education {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  institution String
+  degree      String
+  field       String?
+  location    String?
+  startYear   Int
+  endYear     Int?
+  expected    Boolean       @default(false)
+  details     String[]      @default([])
+  url         String?
+  status      ContentStatus @default(PUBLISHED)
+  order       Int           @default(0)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([status, order])
+}
+
+model CertificateCategory {
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  slug         String        @unique
+  color        String        @default("#10b981")
+  order        Int           @default(0)
+  isDefault    Boolean       @default(false)
+  certificates Certificate[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@index([order])
+}
+
+model Certificate {
+  id             String              @id @default(auto()) @map("_id") @db.ObjectId
+  title          String
+  slug           String              @unique
+  issuer         String
+  issuerUrl      String?
+  categoryId     String              @db.ObjectId
+  category       CertificateCategory @relation(fields: [categoryId], references: [id])
+  issueDate      DateTime
+  expiryDate     DateTime?
+  noExpiry       Boolean             @default(true)
+  credentialId   String?
+  credentialUrl  String?
+  description    String?
+  skills         String[]            @default([])
+  hours          Int?
+  fileUrl        String?
+  fileKey        String?
+  fileType       CertificateFileType?
+  fileSize       Int?
+  thumbnailUrl   String?
+  thumbnailKey   String?
+  altText        String
+  featured       Boolean             @default(false)
+  showOnCv       Boolean             @default(false)
+  allowDownload  Boolean             @default(false)
+  status         ContentStatus       @default(DRAFT)
+  order          Int                 @default(0)
+  seoTitle       String?
+  seoDescription String?
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+
+  @@index([categoryId, order])
+  @@index([status, issueDate])
+  @@index([issueDate])
+  @@index([order])
+}
+
+model Award {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  issuer      String
+  year        Int?
+  date        DateTime?
+  description String?
+  url         String?
+  showOnCv    Boolean       @default(true)
+  status      ContentStatus @default(PUBLISHED)
+  order       Int           @default(0)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([status, order])
+}
+
+model CommunityEntry {
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  title        String
+  slug         String        @unique
+  organisation String
+  organisationUrl String?
+  kind         CommunityKind @default(LEADERSHIP)
+  role         String?
+  period       String?
+  startDate    DateTime?
+  endDate      DateTime?
+  summary      String
+  highlights   String[]      @default([])
+  metricLabel  String?
+  metricValue  String?
+  coverUrl     String?
+  coverKey     String?
+  coverAlt     String?
+  showOnCv     Boolean       @default(true)
+  featured     Boolean       @default(false)
+  status       ContentStatus @default(PUBLISHED)
+  order        Int           @default(0)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@index([status, order])
+}
+
+model Testimonial {
+  id        String        @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  role      String?
+  company   String?
+  quote     String
+  avatarUrl String?
+  avatarKey String?
+  url       String?
+  status    ContentStatus @default(DRAFT)
+  order     Int           @default(0)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@index([status, order])
+}
+
+// ─────────────────────────── Blog ───────────────────────────
+
+model Category {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  slug        String   @unique
+  description String?
+  color       String?
+  order       Int      @default(0)
+  posts       Post[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Tag {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  slug      String   @unique
+  postIds   String[] @default([]) @db.ObjectId
+  posts     Post[]   @relation(fields: [postIds], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Series {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  slug        String   @unique
+  description String?
+  posts       Post[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Post {
+  id              String     @id @default(auto()) @map("_id") @db.ObjectId
+  title           String
+  slug            String     @unique
+  excerpt         String
+  contentJson     Json?
+  contentHtml     String     @default("")
+  coverUrl        String?
+  coverKey        String?
+  coverAlt        String?
+  categoryId      String?    @db.ObjectId
+  category        Category?  @relation(fields: [categoryId], references: [id])
+  tagIds          String[]   @default([]) @db.ObjectId
+  tags            Tag[]      @relation(fields: [tagIds], references: [id])
+  seriesId        String?    @db.ObjectId
+  series          Series?    @relation(fields: [seriesId], references: [id])
+  seriesOrder     Int?
+  status          PostStatus @default(DRAFT)
+  publishedAt     DateTime?
+  featured        Boolean    @default(false)
+  readingTime     Int        @default(1)
+  wordCount       Int        @default(0)
+  seoTitle        String?
+  seoDescription  String?
+  ogImageUrl      String?
+  ogImageKey      String?
+  canonicalUrl    String?
+  isTemplate      Boolean    @default(false)
+  views           Int        @default(0)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  @@index([status, publishedAt])
+  @@index([categoryId])
+  @@index([seriesId, seriesOrder])
+  @@index([featured])
+}
+
+model Subscriber {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  email       String    @unique
+  confirmed   Boolean   @default(false)
+  confirmToken String?
+  source      String?
+  unsubscribedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// ─────────────────────────── Leads & media ───────────────────────────
+
+model ContactMessage {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  kind        MessageKind   @default(CONTACT)
+  name        String
+  email       String
+  company     String?
+  subject     String?
+  message     String
+  projectType String?
+  goals       String?
+  budget      String?
+  timeline    String?
+  status      InquiryStatus @default(NEW)
+  read        Boolean       @default(false)
+  archived    Boolean       @default(false)
+  notes       String?
+  ip          String?
+  userAgent   String?
+  sourcePath  String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([status, createdAt])
+  @@index([read])
+}
+
+model MediaAsset {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  url       String
+  key       String    @unique
+  name      String
+  size      Int
+  type      String
+  width     Int?
+  height    Int?
+  alt       String?
+  slot      MediaSlot @default(NONE)
+  slotIndex Int       @default(0)
+  folder    String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([slot, slotIndex])
+}
+
+model Redirect {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  source      String   @unique
+  destination String
+  permanent   Boolean  @default(true)
+  enabled     Boolean  @default(true)
+  hits        Int      @default(0)
+  note        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model PageSeo {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  path        String   @unique
+  title       String?
+  description String?
+  canonical   String?
+  noindex     Boolean  @default(false)
+  ogImageUrl  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model PageView {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  path      String
+  referrer  String?
+  country   String?
+  device    String?
+  day       String // YYYY-MM-DD for cheap aggregation
+  createdAt DateTime @default(now())
+
+  @@index([path, day])
+  @@index([day])
+  @@index([createdAt])
+}
+
+model CvSettings {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  key              String   @unique @default("default")
+  fileName         String   @default("Romaric-Lonfonyuy-CV.pdf")
+  useUploadedCv    Boolean  @default(false)
+  uploadedUrl      String?
+  uploadedKey      String?
+  uploadedAt       DateTime?
+  summary          String   @default("")
+  referencesNote   String   @default("References available on request.")
+  includeCommunity Boolean  @default(true)
+  includeAwards    Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
